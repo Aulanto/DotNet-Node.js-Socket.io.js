@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+	<!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
+	<!--<script src="http://localhost:8888/socket.io/socket.io.js"></script>-->
+	<script src="socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io('http://localhost:8888');
+		//var socket = io('http://newvq.fxtchina.com:6090');
+		
+	 //连接上
+	  socket.on('connect', function(){
+        //登录
+		  socket.emit('login', {userid:'guest1'});
+		  //监听消息
+		  socket.on('message', function(msg){
+			$('#messages').append($('<li>').text(msg));
+		  });
+      });
+	  
+	 //连接错误
+	  socket.on('connect_error', function(){
+	    $('#messages').append($('<li>').text("connect_error"));
+		
+	  });
+
+	//连接超时
+	  socket.on('connect_timeout', function(){
+		$('#messages').append($('<li>').text("connect_timeout"));
+	  });	
+	  
+     //失去连接
+	  socket.on('disconnect', function(){
+		$('#messages').append($('<li>').text("disconnect"));
+	  });	
+	  
+    </script>
+  </body>
+</html>
+
